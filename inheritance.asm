@@ -40,70 +40,70 @@ dw .first, .second, .third, .fourth
     jsl _84BAA1
     rts
 
-ORG $84BAA1
-_84BAA1:
-    ; $0574 = 0 or 1
-    ; 0 = son, 1 = daughter?
-    phb ; 84:BAA1
-    php ; 84:BAA2
-    phk ; 84:BAA3
-    plb ; 84:BAA4
-    phx ; 84:BAA5
-    lda.w UnitPointer ; 84:BAA6
-    pha ; 84:BAA9
-    lda $0574 ; 84:BAAA
-    sta $04 ; 84:BAAD
-    jsl getUnitId ; 84:BAAF
-    ; skip death check for Deirdre and Ethlyn
-    cmp #$0011 ; 84:BAB3
-    beq + ; 84:BAB6
-    cmp #$0010 ; 84:BAB8
-    beq + ; 84:BABB
-    ; probably a death check
-    jsl _getFlag ; 84:BABD
-    bit #$0200 ; 84:BAC1
-    bne .exit ; 84:BAC4
-+:
-    ldx.w UnitPointer ; 84:BAC6 - save female unit's pointer
-    jsl getUnitLover ; 84:BAC9
-    ora #$0000 ; 84:BACD
-    beq .exit ; 84:BAD0
-    ; don't know why it checks for Ethlyn but not Deirdre...
-    cmp #$0011 ; 84:BAD2
-    bcs .exit ; 84:BAD5
-    jsl searchForUnit ; 84:BAD7
-    bcs .exit ; 84:BADB
-    lda.w UnitPointer ; 84:BADD
-    sta $00 ; 84:BAE0
-    stx.w UnitPointer ; 84:BAE2 - unit pointer is resored to the female unit
-    lda.w UnitPointer ; 84:BAE5
-    sta $02 ; 84:BAE8
-    jsl getUnitSupportID ; 84:BAEA
-    cmp #$0010 ; 84:BAEE
-    bcc .exit ; 84:BAF1
-    sec ; 84:BAF3
-    sbc #$0010 ; 84:BAF4
-    asl A ; 84:BAF7
-    tax ; 84:BAF8
-    lda $04 ; 84:BAF9
-    asl A ; 84:BAFB
-    clc ; 84:BAFC
-    adc.l inheritanceTable,X ; 84:BAFD
-    tax ; 84:BB01
-    lda.l inheritanceTable,X ; 84:BB02
-    beq .exit ; 84:BB06
-    jsl _doInheritance1 ; 84:BB08
-    lda.l inheritanceFlagsTable,X ; 84:BB0C
-    bmi .exit ; 84:BB10
-    ; setting an event flag based on inheritance result?
-    jsl setFlagAt5297 ; 84:BB12
-.exit:
-    pla ; 84:BB16
-    sta.w UnitPointer ; 84:BB17
-    plx ; 84:BB1A
-    plp ; 84:BB1B
-    plb ; 84:BB1C
-    rtl ; 84:BB1D
+; ORG $84BAA1
+; _84BAA1:
+;     ; $0574 = 0 or 1
+;     ; 0 = son, 1 = daughter?
+;     phb ; 84:BAA1
+;     php ; 84:BAA2
+;     phk ; 84:BAA3
+;     plb ; 84:BAA4
+;     phx ; 84:BAA5
+;     lda.w UnitPointer ; 84:BAA6
+;     pha ; 84:BAA9
+;     lda $0574 ; 84:BAAA
+;     sta $04 ; 84:BAAD
+;     jsl getUnitId ; 84:BAAF
+;     ; skip death check for Deirdre and Ethlyn
+;     cmp #$0011 ; 84:BAB3
+;     beq + ; 84:BAB6
+;     cmp #$0010 ; 84:BAB8
+;     beq + ; 84:BABB
+;     ; probably a death check
+;     jsl _getFlag ; 84:BABD
+;     bit #$0200 ; 84:BAC1
+;     bne .exit ; 84:BAC4
+; +:
+;     ldx.w UnitPointer ; 84:BAC6 - save female unit's pointer
+;     jsl getUnitLover ; 84:BAC9
+;     ora #$0000 ; 84:BACD
+;     beq .exit ; 84:BAD0
+;     ; don't know why it checks for Ethlyn but not Deirdre...
+;     cmp #$0011 ; 84:BAD2
+;     bcs .exit ; 84:BAD5
+;     jsl searchForUnit ; 84:BAD7
+;     bcs .exit ; 84:BADB
+;     lda.w UnitPointer ; 84:BADD
+;     sta $00 ; 84:BAE0
+;     stx.w UnitPointer ; 84:BAE2 - unit pointer is resored to the female unit
+;     lda.w UnitPointer ; 84:BAE5
+;     sta $02 ; 84:BAE8
+;     jsl getUnitSupportID ; 84:BAEA
+;     cmp #$0010 ; 84:BAEE
+;     bcc .exit ; 84:BAF1
+;     sec ; 84:BAF3
+;     sbc #$0010 ; 84:BAF4
+;     asl A ; 84:BAF7
+;     tax ; 84:BAF8
+;     lda $04 ; 84:BAF9
+;     asl A ; 84:BAFB
+;     clc ; 84:BAFC
+;     adc.l inheritanceTable,X ; 84:BAFD
+;     tax ; 84:BB01
+;     lda.l inheritanceTable,X ; 84:BB02
+;     beq .exit ; 84:BB06
+;     jsl _doInheritance1 ; 84:BB08
+;     lda.l inheritanceFlagsTable,X ; 84:BB0C
+;     bmi .exit ; 84:BB10
+;     ; setting an event flag based on inheritance result?
+;     jsl setFlagAt5297 ; 84:BB12
+; .exit:
+;     pla ; 84:BB16
+;     sta.w UnitPointer ; 84:BB17
+;     plx ; 84:BB1A
+;     plp ; 84:BB1B
+;     plb ; 84:BB1C
+;     rtl ; 84:BB1D
     
 ORG $838993
 inheritanceTable:

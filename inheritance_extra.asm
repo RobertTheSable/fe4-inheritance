@@ -11,10 +11,9 @@ overrideSeliphStats:
     ; override Seliph's holy blood
     ; seems like they could've just unset the Lopt flags
     ; but what do I know
-    lda #$0006 ; 84:836C
-    sta $0012,X ; 84:836F
-    lda #$0000 ; 84:8372
     sta $0014,X ; 84:8375
+    and #$FFFC
+    sta $0014,X
     jsl getUnitStatsAddress ; 84:8378
     sep #$20 ; 84:837C
     ; Sets Seliph's Authority

@@ -104,7 +104,6 @@ loadFallbackLover:
     asl A
     tax
     lda.w .defaults,X
-    print pc
     ldx.w #((.defaults-.table))
 .loop:
     jsl searchForUnit 
@@ -135,7 +134,6 @@ loadFallbackLover:
     ply
     clc
     rts
-    print pc
 .table:
     dw !Naoise, !Alec, !Arden, !Quan, !Finn, !Azelle, !Lex, !Midir,\
        !Dew, !Jamke, !Chulainn, !Lewyn, !Beowulf, !Claude
@@ -152,3 +150,24 @@ loadFallbackLover:
     sec
     rts
     
+ORG $84835E
+overrideSeliphStats:
+    phb ; 84:835E
+    jsl loadFrom3rdPointer ; 84:835F
+    ; grant Seliph some special skill
+    lda $000F,X ; 84:8363
+    ora #$0008 ; 84:8366
+    sta $000F,X ; 84:8369
+    ; override Seliph's holy blood
+    ; modified to just remove the loptyr blood
+    lda $0014,X ; 84:8375
+    and #$FCFF
+    sta $0014,X
+    jsl getUnitStatsAddress ; 84:8378
+    sep #$20 ; 84:837C
+    ; Sets Seliph's Authority
+    lda #$02 ; 84:837E
+    sta $000A,X ; 84:8380
+    rep #$20 ; 84:8383
+    plb ; 84:8385
+    rts ; 84:8386

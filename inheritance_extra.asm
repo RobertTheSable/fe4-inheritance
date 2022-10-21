@@ -236,6 +236,9 @@ checkUsability:
     rts ; 87:AB50
     
 isHolyWeapon:
+    ; other holy weapons: 
+    ; $24 - Gae Bolg
+    ; $15 - Tyrfing
     jsl LoadFrom0587 ; 87:AB51
     cmp #$004B ; 87:AB55 - Forseti
     beq .clear ; 87:AB58

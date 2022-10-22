@@ -103,7 +103,7 @@ staticUnit:
     sta.l UnitPointers.Unknown3,X ; 84:8F71
     jsr $91B8 ; 84:8F75
     jsr $9148 ; 84:8F78
-    jsr $9247 ; 84:8F7B
+    jsr $9247 ; 84:8F7B - starting inventory is set here
     jsr $9294 ; 84:8F7E
     plx ; 84:8F81
     rts ; 84:8F82

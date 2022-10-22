@@ -79,8 +79,8 @@ _87AA39:
     phx ; 87:AA3D
     phy ; 87:AA3E
     jsr _AAC9 ; 87:AA3F - Tyrfing is "removed" from sigurd's inventory here
-    jsl $84F316 ; 87:AA42 - gets child unit's starting items?
-    sta $06 ; 87:AA46 - set starting inventory size?
+    jsl $84F316 ; 87:AA42 - gets the child unit's starting size
+    sta $06 ; 87:AA46
     lda #$0001 ; 87:AA48
     jsl _84F3B5 ; 87:AA4B
     lda $0583 ; 87:AA4F
@@ -226,7 +226,6 @@ checkUsability:
     rts ; 87:AB41
 .table:
     dw .first, .first, .second, .second
-    print pc
 .first:
     jsl $84F70A ; 87:AB4A
     rts ; 87:AB4E
@@ -496,7 +495,25 @@ _F288:
     plb ; 84:F2BC
     rts ; 84:F2BD
     
-ORG $84F338
+    
+ORG $84F316
+    phb ; 84:F316
+    php ; 84:F317
+    phk ; 84:F318
+    plb ; 84:F319
+    phx ; 84:F31A
+    ldx.w UnitPointer ; 84:F31B
+    lda.l UnitPointers.Inventory+1,X ; 84:F31E
+    sta $055D ; 84:F322
+    lda.l UnitPointers.Inventory,X ; 84:F325
+    clc ; 84:F329
+    adc #$0001 ; 84:F32A
+    sta $055C ; 84:F32D
+    jsl loadIndirectValueFrom55C ; 84:F330
+    plx ; 84:F334
+    plp ; 84:F335
+    plb ; 84:F336
+    rtl ; 84:F337
 _84F338:
     phb ; 84:F338
     phk ; 84:F339

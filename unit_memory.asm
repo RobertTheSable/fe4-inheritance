@@ -21,9 +21,31 @@ struct UnitPointers $7e0000
     .HolyPointerBank: skip 1
 endstruct
 
+; actually located at $7e3d8B, but 
+struct ItemList $7e0000
+    .Id: skip 1
+    .Uses: skip 1
+    .Location: skip 1 
+    ; location values: 
+    ; 1 = held by unit
+    ; 2 = in storage
+    ; 4 = in armory
+    ; 5 = in pawn shop
+    ; 7 = uninherited
+    .Owner: skip 2
+    ; owner is a pointer to the owning unit
+    .Kills: skip 1
+endstruct
+
 UnitPointer = $056F
 
 ItemList = $7E3D87
+
+ChapterNumber = $7E0D6A
+
+ChapterDataPointer = $7E0D6C
+
+ChapterDataPointersTable = $86C760
 
 ORG $8484B4
 searchForUnit:

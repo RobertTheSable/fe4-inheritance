@@ -209,33 +209,8 @@ checkUsability:
     sec ; 87:AB4F
     rts ; 87:AB50
     
-isHolyWeapon:
-    ; other holy weapons: 
-    ; $24 - Gae Bolg
-    ; $15 - Tyrfing
-    jsl LoadFrom0587 ; 87:AB51
-    cmp #$004B ; 87:AB55 - Forseti
-    beq .clear ; 87:AB58
-    cmp #$0062 ; 87:AB5A - Valkyrie
-    beq .clear ; 87:AB5D
-    cmp #$0036 ; 87:AB5F - Yewfelle
-    beq .clear ; 87:AB62
-    jsl GetWeaponRank ; 87:AB64
-    ora #$0000 ; 87:AB68
-    bmi .set ; 87:AB6B
-    lda #$0000 ; 87:AB6D
-    clc ; 87:AB70
-.exit:
-    rts ; 87:AB71
-.clear:
-    lda #$0001 ; 87:AB72
-    clc ; 87:AB75
-    bra .exit ; 87:AB76
-.set:
-    ; holy weapon
-    sec ; 87:AB78
-    bra .exit ; 87:AB79
-    
+
+ORG $87AB7B
 _AB7B:
     jsr isHolyWeapon ; 87:AB7B
     bcs .jumpAndExit ; 87:AB7E

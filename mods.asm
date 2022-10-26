@@ -171,3 +171,131 @@ overrideSeliphStats:
     rep #$20 ; 84:8383
     plb ; 84:8385
     rts ; 84:8386
+
+; add the ch8 steel lance to Altenna's base inventory
+ORG $83b89e
+    db $34, $FF
+
+; override the chapter 8 vendor
+ORG $86F34C
+    db $08, $1c, $23, $29, $32, $33, $44, $47, $4a, $50, $55, $58, $65, $72, $06, $30, $48, $5d, $64, $67
+    dw $FFFF
+
+ORG $87AB51
+isHolyWeapon:
+    ; other holy weapons:
+    ; $24 - Gae Bolg
+    ; $15 - Tyrfing
+    jsl LoadFrom0587 ; 87:AB51
+    jsr holyWeaponOverride
+    bcs .clear
+    jsl GetWeaponRank ;
+    ora #$0000 ;
+    bmi .set ;
+    lda #$0000 ;
+    clc ;
+.exit:
+    rts ;
+.clear:
+    lda #$0001 ;
+    clc ;
+    bra .exit ;
+.set:
+    ; holy weapon, don't inherit
+    sec ;
+    bra .exit ;
+
+namespace Talks
+
+ORG $879EB1
+    jsr (ConditionTable,X)
+
+namespace off
+
+ORG $87FDE0
+holyWeaponOverride:
+    phx
+    php
+    sep #$10
+    ldx #$06
+-:
+    cmp.w .table,X
+    bne .continue
+    plp
+    sec
+    bra .exit
+.continue:
+    dex
+    dex
+    bpl -
+    plp
+    clc
+.exit:
+    plx
+    rts
+.table:
+    dw $004B, $0062, $0036, $0024
+
+namespace Talks
+
+Enabled = $879ED8
+RequiresGold = $879EDC
+
+ConditionTable:
+    dw Enabled, RequiresGold, SigurdChildOnly
+SigurdChildOnly:
+    jsl $84A43D
+    cmp #$0001
+    bne .notSigurd
+    sec
+    rts
+.notSigurd
+    clc
+    rts
+global setupHolyFlash:
+    lda $0ea7
+    sta.w UnitPointer
+    ; jump part of the way into $91C947, skipping the unit search
+    jsl $91C94D
+    rtl
+
+macro NPCTalkEnablingHeader(id, flag, unit1, unit2, condition)
+    dw <id>
+    db <flag>
+    dw <unit1>, <unit2>
+    db <condition>
+endmacro
+
+macro TalkEventHeader(flag, unit1, unit2, arg4)
+    db <flag>
+    dw <unit1>, <unit2>
+    dw <arg4>
+endmacro
+
+ORG $B083E3
+    %NPCTalkEnablingHeader(10, $2B, $FFFF, $0195, 2)
+
+ORG $B08088
+    %TalkEventHeader($2B, $FFFF, $0195, $FFFF)
+
+namespace off
+
+; trying to keep the text pointer the same, regardless of the TL used
+if canread3($8D8BCD) == 1 && read1($8D8BCC) == $0C
+    !TextOffset = read3($8D8BCD)
+else
+    !TextOffset = $B3C673
+endif
+
+ORG $8d8bbd
+; Palmark event script
+    %PauseMusic()
+    %SetMusic($62)
+    %GiveItemToUnit($27) ; $27 = Tyrfing item index
+    %ShowText(!TextOffset)
+    %ASM(setupHolyFlash)
+    %ASM($8d8be5)
+    %YIELD()
+    %PauseMusic()
+    %RestartMusic()
+    %ENDEVENT()

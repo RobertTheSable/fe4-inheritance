@@ -32,26 +32,26 @@ dw $00AA, $00C1, $00D8, $00EF, $0106, $011D, $0134, $014B
 dw $0162, $0179, $0190, $01A7, $01BE, $01D5, $01EC, $0203
 ; and the actual growths start here
 ; deirdre
-db 1, 0, 0, 0, 00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+db  2, 2, 2, 2,  2,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 ; ethlyn
-db 0, 0, 0, 0, 00, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+db -5, 2, 2, 2,  2,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 ; Lachesis
-db 0, 2, 2, 2, 02, 0, 2, 2, 2, 2, 2, 3, 2, 2, 2
+db  2, 2, 2, 2,  2,  2, 2, 2, 2, 2, 2, 3, 2, 2, 2
 ; Ayra
-db 0, 2, 2, 2, 02, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2 
+db  2, 2, 2, 2,  2,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 ; Erinys
-db 0, 2, 2, 2, 02, 0, 2, 2, 2, 2, 2, 3, 2, 2, 2 
+db  2, 2, 2, 2,  2,  2, 2, 2, 2, 2, 2, 3, 2, 2, 2
 ; Tailtiu
-db 0, 3, 3, 3, 10, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3 
+db  3, 3, 3, 3, 10, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3
 ; Sylvia
-db 0, 3, 3, 3, 03, 0, 3, 2, 3, 3, 3, 1, 3, 3, 3 
+db  4, 3, 3, 3,  3,  3, 3, 2, 3, 3, 3, 1, 3, 3, 3
 ; Edain
-db 0, 2, 2, 2, 02, 0, 1, 2, 2, 1, 1, 3, 2, 2, 2 
+db  2, 2, 2, 2,  2,  2, 1, 2, 2, 1, 1, 3, 2, 2, 2
 ; Brigid
-db 0, 4, 4, 4, 10, 0, 3, 4, 3, 3, 3, 4, 4, 4, 2
+db  4, 4, 4, 4, 10, 10, 3, 4, 3, 3, 3, 4, 4, 4, 2
 ; and after this are the Gen 2 growths, which I won't copy because I'm lazy.
 ; example: daisy (data from $8387F1)
-; 02 02 02 FB 02 02 03 03 02 FB 02 FB 02 02 02 02 02 FB 03 03 02 02 02
+; 02 02 02 -5 02 02 03 03 02 -5 02 -5 02 02 02 02 02 -5 03 03 02 02 02
 ; negative growth with Asaello, Finn, Hannibal, and Faval
 
 ORG $83850F
@@ -67,22 +67,22 @@ dw $0162, $0179, $0190, $01A7, $01BE, $01D5, $01EC, $0203
 ; yes, the offset values are the same as the growth table
 ; values in this table are multiplied  by 10 for the starting value
 ; deidre
-db !maxSupport,  0,  0,  0,  0,  !noSupport,  0,  0,  0,  0,  0,  0,  0,  0,  0
+db          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 ;Ethlyn
-db  !noSupport,  0,  0,  0,  0, !maxSupport,  0,  0,  0,  0,  0,  0,  0,  0,  0
+db !noSupport,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 18,  0,  0,  0
 ; Lachesis
-db  !noSupport,  5,  5,  5,  5,  !noSupport,  5,  5,  5,  5,  5,  5,  5,  5,  5
+db          5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5
 ; Ayra
-db  !noSupport,  0,  0,  0,  0,  !noSupport,  0,  5,  0,  0,  0, 20,  5,  0,  0
+db          0,  0,  0,  0,  0,  0,  0,  5,  0,  0,  0, 20,  5,  0,  0
 ; Erinys
-db  !noSupport,  5,  5,  5,  5,  !noSupport,  5, 21,  5,  5,  5, 10,  5,  5,  5
+db          5,  5,  5,  5,  5,  5,  5, 21,  5,  5,  5, 10,  5,  5,  5
 ; Tailtiu
-db  !noSupport, 12, 12, 12, 18,  !noSupport, 12, 12, 12, 12, 12, 18, 12, 12, 12 
+db         12, 12, 12, 12, 18, 18, 12, 12, 12, 12, 12, 18, 12, 12, 12
 ; Sylvia
-db  !noSupport,  0,  0,  0,  0,  !noSupport,  0, 20,  0,  0,  0, 19,  0,  0,  0
+db          0,  0,  0,  0,  0,  0,  0, 20,  0,  0,  0, 19,  0,  0,  0
 ; Edain
-db  !noSupport,  0,  0,  0,  0,  !noSupport, 12,  5,  0, 12, 25, 15, 10,  0,  0
+db          0,  0,  0,  0,  0,  0, 12,  5,  0, 12, 25, 15, 10,  0,  0
 ; Brigid - her base support with Holyn is either increased somewhere else, or SF is wrong.
-db  !noSupport,  5,  5,  5, 18,  !noSupport, 10,  5,  5, 15, 15,  5,  5,  5,  5
+db          5,  5,  5,  5, 18, 18, 10,  5,  5, 15, 15,  5,  5,  5,  5
 
 

@@ -255,7 +255,7 @@ endmacro
 ; helper macros
 ; these are shortcuts for common event arguments
 ; or combinations of multiple events
-; usually some event(s) plus a RunEvents command
+; usually some event(s) plus a YIELD command
 
 ; combines all the event commands which are used to pause music
 macro PauseMusic()
@@ -322,7 +322,7 @@ macro SetTalkTo(unit, target)
     %_4A($68, <unit>, <target>)
 endmacro
 
-; Some recursive helpers to avoid having to insert RunEvents or EventEnd commands
+; Some recursive helpers to avoid having to insert YIELD or ENDEVENT commands
 ; Depending on usage, there may be a risk of hitting a recursion limit.
 ; Also, Asar's syntax for passing macros to other macros is finnicky.
 ; Expecially if you want to put arguments on multiple lines.

@@ -21,4 +21,4 @@ asar main.asm [path/to/your/rom]
 - Adjusted Deirdre and Ethlyn's lvoe pooint bases/growths so they can be paired with other units.
 - Adjusted the inheritance mechanism to allow Gáe Bolg to be inherited like other holy weapons.
 - Moved the Steel Lance from the Chapter 8 vendor to Altena's starting inventory in case she doesn't inherit anything else.
-- Allower the Chapter 10 Palmark event to be activate by any unit, as long as they're Sigurd's child.
+- Allower the Chapter 10 Palmark event to be activate by any unit, as long as they're Sigurd's primary child.

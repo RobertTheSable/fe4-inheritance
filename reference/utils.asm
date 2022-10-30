@@ -321,3 +321,8 @@ copyBytesFrom:
     plx ; 82:EA40
     plp ; 82:EA41
     rts ; 82:EA42
+    
+; sets carry if an event flag is set, clears it if not
+CheckEventFlagSet = $869A50
+
+SetEventFlag = $8699D6

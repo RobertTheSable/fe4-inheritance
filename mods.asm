@@ -1,7 +1,5 @@
 includeonce
 
-incsrc "inheritance_extra.asm"
-
 !Sigurd = $0001
 !Naoise = $0002
 !Alec = $0003
@@ -247,6 +245,10 @@ SigurdChildOnly:
     jsl $84A43D
     cmp #$0001
     bne .notSigurd
+    lda #$0000
+    jsl checkHolyBlood
+    cmp #$0002
+    bne .notSigurd
     sec
     rts
 .notSigurd
@@ -259,23 +261,10 @@ global setupHolyFlash:
     jsl $91C94D
     rtl
 
-macro NPCTalkEnablingHeader(id, flag, unit1, unit2, condition)
-    dw <id>
-    db <flag>
-    dw <unit1>, <unit2>
-    db <condition>
-endmacro
-
-macro TalkEventHeader(flag, unit1, unit2, arg4)
-    db <flag>
-    dw <unit1>, <unit2>
-    dw <arg4>
-endmacro
-
 ORG $B083E3
     %NPCTalkEnablingHeader(10, $2B, $FFFF, $0195, 2)
 
-ORG $B08088
+ORG $B08087
     %TalkEventHeader($2B, $FFFF, $0195, $FFFF)
 
 namespace off

@@ -1,4 +1,5 @@
 includefrom "inheritance.asm"
+
 ORG $82EFE1
 _EFE1:
     sep #$20 ; 82:EFE1

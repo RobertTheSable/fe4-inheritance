@@ -1,8 +1,5 @@
 includefrom "inheritance.asm"
 
-incsrc "inherited_bases.asm"
-incsrc "holyblood.asm"
-
 ; a function that pushes the program counter bank and pulls the data bank
 ; :v
 SetPBToPC = $83F7C1

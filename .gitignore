@@ -1,5 +1,8 @@
 /states
 *.sfc
 *.sfc.bak
-/sums
+*.smc
+*.smc.bak
+/sums*
 *.bst
+*.ips

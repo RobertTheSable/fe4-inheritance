@@ -16,7 +16,8 @@ struct UnitPointers $7e0000
     ; 
     .Inventory: skip 2
     .InventoryBank: skip 1
-    ; 6th pointer only seems to be used by "holy" units
+    ; 6th pointer contains the love point table for the unit
+    ; it also seems to be used by "holy" units for something else
     .HolyPointer: skip 2
     .HolyPointerBank: skip 1
 endstruct

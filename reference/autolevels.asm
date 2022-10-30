@@ -195,7 +195,6 @@ getHolyBloodBonus:
 
 ORG $84A5C0
 checkHolyBlood:
-    ; holy blood inheritance
     phb ; 84:A5C0
     php ; 84:A5C1
     phk ; 84:A5C2

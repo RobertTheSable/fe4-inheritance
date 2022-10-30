@@ -231,11 +231,11 @@ ORG $87AC43
 getLovePointTableAddress:
     ldx.w UnitPointer; 87:AC43
     sep #$20 ; 87:AC46
-    lda $7E0012,X ; 87:AC48
+    lda.l UnitPointers.HolyPointerBank,X ; 87:AC48
     pha ; 87:AC4C
     rep #$20 ; 87:AC4D
     plb ; 87:AC4F
-    lda $7E0010,X ; 87:AC50
+    lda.l UnitPointers.HolyPointer,X ; 87:AC50
     tax ; 87:AC54
     rtl ; 87:AC55
     

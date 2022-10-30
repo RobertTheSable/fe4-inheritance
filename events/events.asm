@@ -1,5 +1,7 @@
 includeonce
 
+incsrc "headers.asm"
+
 ; set of macros for events in FE4.
 ; I've only documented ones that I've seen, so this list is incomplete.
 
@@ -11,6 +13,20 @@ includeonce
 macro GOTO(location)
     db $02
     dw <location>
+endmacro
+
+; jump the event parser to the specified location if $172E is nonzero
+; i.e. if the last condition was true
+macro GOTOTRUE(location)
+    db $03
+    dw <location>
+endmacro
+
+; seems to check if a flag is set
+; stores 0 to $172E if it wasn't set
+; stores 1 if it was
+macro CHECKFLAG(chapter, flag)
+    db $08, <chapter>, <flag>
 endmacro
 
 ; display text from the given long address
@@ -97,6 +113,11 @@ macro _34(arg1)
     dw <arg1>
 endmacro
 
+; sets the cursor positon based on $1726 and $1728
+macro SETCURSOR()
+    db $39
+endmacro
+
 ; sets the camera's X, Y position
 ; usually used while the screen is black.
 macro SETCAM(x, y)
@@ -110,18 +131,25 @@ endmacro
 
 ; move the camera based on some data at <location>
 ; the second argument controls the panning speed
-macro MOVECAM(location, speed)
+macro MOVECAM1(location, speed)
     db $3F
     dl <location>
     db <speed>
 endmacro
 
-; searches for a given unit and grabs some data for them
-; stores the reults in $1722-$1728
-macro _42(arg1, arg2)
+; move the camera based on coordinates and the given speed
+macro MOVECAM2(x, y, speed)
+    db $3F
+    db <x>, <y>, <speed>
+endmacro
+
+; searches for a given unit and grabs their X/Y coordinates?
+; stores the unit pointer in $1722
+macro GETPOSITION(unit, arg2)
     ; does something different if arg2 is nonzero
+    ; but I don't know what yet
     db $42
-    dw <arg1>
+    dw <unit>
     db <arg2>
 endmacro
 
@@ -143,10 +171,13 @@ endmacro
 ;   $49 (1 word argument) - loads units?
 ;   $4A (1 byte argument) - used as an offset for $81C000 + ???
 ;   $4E (1 byte argument) - maybe used for fading out music?
-macro _GiveItem(arg1, ...)
+;   $5B (1 word argument, 1 byte argument)
+;   $60 (2 word arguments, 1 byte arguments) - add love points between units
+;   $68 (2 byte arguments) - sets "talk to" field
+macro _4A(arg1, ...)
     db $4A
     db <arg1>
-    if <arg1> == $58 || <arg1> == $57
+    if <arg1> == $58 || <arg1> == $57 || <arg1> == $5B
         if sizeof(...) < 2
             error "Wrong number of arguments for item giving."
         else
@@ -154,8 +185,37 @@ macro _GiveItem(arg1, ...)
             dw <0>
             db <1>
         endif
+    elseif <arg1> == $49
+        if sizeof(...) < 2
+            error "Wrong number of arguments for _4A."
+        else
+            dw <0>
+        endif
+    elseif <arg1> == $60
+        if sizeof(...) < 3
+            error "Wrong number of arguments for _4A."
+        else
+            dw <0>, <1>
+            db <2>
+        endif
     else
-        error "Undocumented _4A argument."
+        if <arg1> == $68
+            !expected #= 2
+        elseif <arg1> == $4A || <arg1> == $4E
+            !expected #= 1
+        else 
+            !expected #= sizeof(...)
+        endif
+        !index #= 0
+        !limit #= sizeof(...)
+        if !expected != !limit
+            error "Wrong number of arguments for _4A."
+        else
+            while !index < !limit
+                db <!index>
+                !index #= !index+1
+            endif
+        endif
     endif
 endmacro
 
@@ -223,21 +283,43 @@ macro ShowText(arg1)
     %YIELD()
 endmacro
 
+; adds an item to a units inventory
+; the unit ID is optional. 
+; this macro will automatically insert a $FFFF if no Unit ID is given.
+macro GiveItemToUnit(...)
+    if sizeof(...) > 1
+        %_4A($57, <0>, <1>)
+    else 
+        %_4A($57, $FFFF, <0>)
+    endif
+endmacro
+
 ; gives an item and equips it
 ; will abort if $FFFF is given as the unit number
 macro GiveWeaponToUnit(unit, item)
     %_4A($58, <unit>, <item>)
 endmacro
 
-; adds an item to a units inventory
-; the unit ID is optional. 
-; this macro will automatically insert a $FFFF if no Unit ID is given.
-macro GiveItemToUnit(...)
+; Seems similar to GiteItemToUnit...
+macro GiveItemToUnit2(...)
     if sizeof(...) > 1
-        %_GiveItem($57, <0>, <1>)
+        %_4A($5B, <0>, <1>)
     else 
-        %_GiveItem($57, $FFFF, <0>)
+        %_4A($5B, $FFFF, <0>)
     endif
+endmacro
+
+; add love points between two given units
+; does nothing if the two units have a negative point total
+macro AddLovePoints(unit1, unit2, points)
+    %_4A($60, <unit1>, <unit2>, <points>)
+endmacro
+
+; senables a conversation between player units
+; the arguments are bytes, so it doesn't work for units
+; whoses ID > $FF
+macro SetTalkTo(unit, target)
+    %_4A($68, <unit>, <target>)
 endmacro
 
 ; Some recursive helpers to avoid having to insert RunEvents or EventEnd commands

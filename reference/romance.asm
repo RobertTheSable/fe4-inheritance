@@ -4,7 +4,6 @@ PointIncrease = $0574 ; address is used for multiple things
 !max_points = 500
 
 incsrc "unit_memory.asm"
-incsrc "tables.asm"
 incsrc "romance2.asm"
 incsrc "setLover.asm"
 incsrc "loading.asm"
@@ -31,11 +30,11 @@ mysteryQueue:
     asl A ; 86:83EA
     tax ; 86:83EB
     clc ; 86:83EC
-    ; this jumps to calcLoveThingy at some point
+    ; this jumps to _869970 at some point
     jmp ($83FA,X) ; 86:83ED
     
 ORG $869970
-calcLoveThingy:
+_869970:
     ; does something at the start of the turn if two characters are lovers?
     bcs .exit ; 86:9970
     lda.w UnitPointer ; 86:9972

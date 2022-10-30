@@ -2,8 +2,9 @@ hirom
 
 ORG $808000
 
-incsrc "events.asm"
+incsrc "events/events.asm"
 incsrc "mods.asm"
-incsrc "romance.asm"
-incsrc "utils.asm"
-incsrc "inheritance.asm"
+incsrc "tables.asm"
+incsrc "reference/romance.asm"
+incsrc "reference/utils.asm"
+incsrc "reference/inheritance.asm"

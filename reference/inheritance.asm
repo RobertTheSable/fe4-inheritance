@@ -4,6 +4,8 @@ incsrc "inheritance2.asm"
 incsrc "autolevels.asm"
 incsrc "inheritance3.asm"
 incsrc "inheritance_extra.asm"
+incsrc "inherited_bases.asm"
+incsrc "holyblood.asm"
 
 ORG $848325
 jumpSomewhere:
